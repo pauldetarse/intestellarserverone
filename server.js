@@ -1,44 +1,106 @@
 var static = require('node-static');
 var http = require('http');
-// Create a node-static server instance
-var file = new(static.Server)();
-/*
-app.use(function (req, res, next) {
-        res.setHeader('Access-Control-Allow-Origin', "http://"+req.headers.host+':8000');
+var express=require('express');
 
-        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-        next();
-    }
-);
+var path = require('path');
+var favicon = require('serve-favicon');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 
 
-var express = require('express'),
-    app = express(),
-    server = require('http').Server(app),
-    io = require('socket.io')(server);
-	*/
+var routes = require('./routes/index');
+//var users = require('./routes/users');
+
+var orders = require('./routes/orders');
+var youtube = require('./routes/youtube');
+
+
 
 
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
 var port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 
-// We use the http module’s createServer function and
-// rely on our instance of node-static to serve the files
-var server = http.createServer(function (req, res) {
-	
-  file.serve(req, res);
-})
+var app=express();
+var server=http.createServer(app);
 
 
 
 
-// Use socket.io JavaScript library for real-time web applications
+
 var io = require('socket.io')(server);
 
- 
-    io.set('origins', '*:*');
+io.set('origins', '*:*');
+
+
+
+
+//database.close();
+
+
+app.set('port', process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 8080);
+app.set('ip', process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1");
+
+
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+//app.use(express.static(path.join(__dirname, 'polymerstellar')));
+app.use(express.static(path.join(__dirname, 'polymer')));
+app.use(express.static(path.join(__dirname,'webrtc')));
+
+
+
+
+
+
+app.use('/', routes);
+//app.use('/users', users);
+app.use('/api',orders);
+app.use('/api',youtube);
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
+// error handlers
+
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
+    });
+  });
+}
+
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: {}
+  });
+});
+
 server.listen(port,ipaddress);
+
 
 // Let's start managing connections...
 io.sockets.on('connection', function (socket){
@@ -49,8 +111,9 @@ io.sockets.on('connection', function (socket){
 		console.log('message');
 		console.log(message);
         log('S --> got message: ', message);
+		console.log('message.channel'+message.channel);
         // channel-only broadcast...
-        socket.broadcast.to(message.channel).emit('message', message);
+        socket.broadcast.to(message.channel).emit('message', message.message);
     });
 
     // Handle 'create or join' messages

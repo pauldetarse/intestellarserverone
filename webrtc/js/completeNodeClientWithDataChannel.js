@@ -55,21 +55,23 @@ var pc_constraints = {
   ]};
 
 var sdpConstraints = {};
+
  var option={ reconnection: true, 
                     reconnectionDelay: 2000,
                     reconnectionAttempts: 100,
                     secure: false
                   }
 
+
 // Let's get started: prompt user for input (room name)
 var room = prompt('Enter room name:');
 
 // Connect to signalling server
-//var socket = io.connect("http://localhost:8080");
+//var socket = io.connect("http://localhost:8080",option);
 //var socket = io.connect('http://stellarserverone-startrade.rhcloud.com:8000/', {'forceNew':true });
 //var socket = io.connect('http://stellarserverone-startrade.rhcloud.com:8000/');
-var socket = io("ws://"+document.location.hostname+":8000",option);
-//var socket = io("http://"+document.location.hostname+":8000",option);
+//var socket = io("ws://"+document.location.hostname+":8000",option);
+var socket = io("http://"+document.location.hostname+":8000",option);
 //var socket=io.connect('http://stellarserverone-startrade.rhcloud.com:8000');
 //var socket = io();
 
@@ -147,15 +149,25 @@ socket.on('log', function (array){
 
 // Receive message from the other peer via the signalling server
 socket.on('message', function (message){
+	if (message.type === 'offer')
+		console.log('offer');
+	
+	if (message.type == 'offer')
+		console.log('offer')
 	console.log('received message');
+	if (message.type === 'offer')
+		console.log('offer')
   console.log('Received message:', message);
   if (message === 'got user media') {
       checkAndStart();
   } else if (message.type === 'offer') {
+	  console.log('received offer');
     if (!isInitiator && !isStarted) {
       checkAndStart();
     }
+	console.log('received offer');
     pc.setRemoteDescription(new RTCSessionDescription(message));
+	  console.log('received offer');
     doAnswer();
   } else if (message.type === 'answer' && isStarted) {
     pc.setRemoteDescription(new RTCSessionDescription(message));
@@ -173,7 +185,7 @@ socket.on('message', function (message){
 // Send message to the other peer via the signalling server
 function sendMessage(message){
   console.log('Sending message: ', message);
-  socket.emit('message', message);
+  socket.emit('message', {'message':message,'channel':room});
 }
 
 // Channel negotiation trigger function
@@ -182,11 +194,14 @@ function checkAndStart() {
 	console.log('isStarted'+isStarted);
 	console.log('localStream'+localStream);
 	console.log('isChannelReady'+isChannelReady);
+	console.log('isInitiator'+isInitiator);
 
   if (!isStarted && typeof localStream != 'undefined' && isChannelReady) {
+	  console.log('before do call');
         createPeerConnection();
     isStarted = true;
     if (isInitiator) {
+		console.log('after do call');
       doCall();
     }
   }
@@ -254,7 +269,10 @@ function handleMessage(event) {
 }
 
 function handleSendChannelStateChange() {
+	console.log(' handleSendChannelStateChange');
+	
   var readyState = sendChannel.readyState;
+  console.log(readyState);
   trace('Send channel state is: ' + readyState);
   // If channel ready, enable user's input
   if (readyState == "open") {

@@ -16,6 +16,12 @@ router.get('/tuna', function(req, res, next) {
 	res.sendFile(path.join(__dirname,'../tuna/tuna-28.html'));
 });
 
+router.get('/webrtc',function(req,res,next){
+
+	res.sendFile(path.join(__dirname,'../index.html'));
+
+})
+
 router.get('/ajax', function(req, res, next) {
   //res.render('index', { title: 'Express' });
 		console.log('ajax');
