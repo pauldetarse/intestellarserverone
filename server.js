@@ -44,7 +44,10 @@ server.listen(port,ipaddress);
 io.sockets.on('connection', function (socket){
 
         // Handle 'message' messages
+	
     socket.on('message', function (message) {
+		console.log('message');
+		console.log(message);
         log('S --> got message: ', message);
         // channel-only broadcast...
         socket.broadcast.to(message.channel).emit('message', message);
@@ -58,7 +61,9 @@ io.sockets.on('connection', function (socket){
 		roomObject=io.nsps['/'].adapter.rooms[room];
 		if(roomObject)
 	  		numClients=	Object.keys(roomObject).length;
+		else
 			numClients=0;
+		console.log('numClients '+numClients);
       //  var numClients = io.sockets.clients(room).length;
 
         log('S --> Room ' + room + ' has ' + numClients + ' client(s)');

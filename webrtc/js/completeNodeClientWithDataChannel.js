@@ -22,6 +22,12 @@ var receiveTextarea = document.getElementById("dataChannelReceive");
 // HTML5 <video> elements
 var localVideo = document.querySelector('#localVideo');
 var remoteVideo = document.querySelector('#remoteVideo');
+var start = document.querySelector('#start');
+start.addEventListener('click',function(){
+	console.log('start');
+	checkAndStart();
+
+})
 
 // Handler associated with 'Send' button
 sendButton.onclick = sendData;
@@ -63,6 +69,7 @@ var room = prompt('Enter room name:');
 //var socket = io.connect('http://stellarserverone-startrade.rhcloud.com:8000/', {'forceNew':true });
 //var socket = io.connect('http://stellarserverone-startrade.rhcloud.com:8000/');
 var socket = io("ws://"+document.location.hostname+":8000",option);
+//var socket = io("http://"+document.location.hostname+":8000",option);
 //var socket=io.connect('http://stellarserverone-startrade.rhcloud.com:8000');
 //var socket = io();
 
@@ -130,6 +137,7 @@ socket.on('joined', function (room){
   // Call getUserMedia()
   navigator.getUserMedia(constraints, handleUserMedia, handleUserMediaError);
   console.log('Getting user media with constraints', constraints);
+	
 });
 
 // Server-sent log message...
@@ -139,6 +147,7 @@ socket.on('log', function (array){
 
 // Receive message from the other peer via the signalling server
 socket.on('message', function (message){
+	console.log('received message');
   console.log('Received message:', message);
   if (message === 'got user media') {
       checkAndStart();
@@ -169,6 +178,10 @@ function sendMessage(message){
 
 // Channel negotiation trigger function
 function checkAndStart() {
+	console.log('checkAndStart')
+	console.log('isStarted'+isStarted);
+	console.log('localStream'+localStream);
+	console.log('isChannelReady'+isChannelReady);
 
   if (!isStarted && typeof localStream != 'undefined' && isChannelReady) {
         createPeerConnection();
