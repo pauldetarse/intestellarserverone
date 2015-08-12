@@ -34,7 +34,7 @@ var server = http.createServer(function (req, res) {
 
 
 // Use socket.io JavaScript library for real-time web applications
-var io = require('socket.io').listen(server);
+var io = require('socket.io')
 
  io.set('transports', ['websocket', 'xhr-polling', 'jsonp-polling', 'htmlfile', 'flashsocket']);
     io.set('origins', '*:*');
