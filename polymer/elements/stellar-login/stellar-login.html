@@ -1,0 +1,177 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<dom-module id="stellar-login">
+  <style>
+    :host {
+      display: block;
+    }
+	   
+	 
+  </style>
+
+  <template>
+	  
+	  
+				<div class="horizontal-section">
+					 <div>[[arrayItem(contacts.*, 0, 'userName')]]</div>
+					
+		
+
+          <paper-input name="username" label="Name" bind-value="{{username}}"  required></paper-input>
+
+          <br>
+			  <paper-input name="password" label="Password" bind-value="{{password}}"  required></paper-input>
+
+          <br>
+					
+			 <paper-button on-click="sendInformationToServer" raised>Send</paper-button>
+
+         
+				
+	  </div>
+	  
+	  <iron-localstorage name="my-app-storage"
+    value="{{credentials}}"
+    
+  ></iron-localstorage>
+	 
+	    
+	  
+   
+  </template>
+</dom-module>
+<script>
+  (function () {
+	  var c=[];
+    Polymer({
+		busopen:false,
+		eb:null,
+      is: 'stellar-login',
+		
+      properties: {
+        contacts: {
+          type: Array,
+          notify: true,
+			value:function(){
+			return['hey'];
+		
+			}
+        },factoryImpl:function(eb){
+			eb=eb;
+		
+		},
+		username:{
+			type:String,
+			notify:true,
+			value:'ss'
+			
+		
+		},
+		  password:{
+			  type:String,
+			notify:true
+		  
+		  },
+		  credentials:{
+			  type:Object,
+		  
+		  }
+		 
+      },
+		
+		 arrayItem: function(change, index, path) {
+        // this.get(path, root) returns a value for a path
+        // relative to a root object.
+        return this.get(path, change.base[index]);
+      },
+		sendInformationToServer:function(){
+			self=this;
+			
+		
+	
+			
+			console.log(this.get('contacts'));
+			console.log(self.username);
+			console.log(self.password);
+		
+			 
+			
+	
+		eb.send('Authenticator',{username:self.username,password:self.password,action:'authenticate'},function(reply){
+			//self.credentials={username:this.username,password:this.password};
+			console.log(self.username);
+			localStorage.setItem('username',self.username);
+			console.log(localStorage.getItem('username'));
+			self.set("credentials.username",this.username);
+			self.set("credentials.password",this.password);
+			
+			 
+		
+		
+			console.log(reply.status);
+			
+			
+			  eb.send("ContactList",{username:self.username},function(reply){
+				
+				 
+            console.log(reply);
+            
+			
+           
+                for(var i=0;i<reply.length;i++)
+                    if(this.username!=reply[i]){
+						console.log(reply[i]);
+					
+						self.unshift('contacts',reply[i]);
+					}
+				
+                  //   contacts.push(reply[i].userName);
+				  console.log(self.get('contacts'))
+				   localStorage.setItem("contacts",JSON.stringify(self.get('contacts')));
+				  page.redirect('/contact');
+      
+     
+        });
+				
+	
+		})
+			
+		},
+		
+      ready: function() {
+		  eb.onopen=function(){
+			 console.log('login onopen');
+		  
+		  
+		  }
+		  
+		  
+        this.items = [
+          'Roger',
+          'Bob',
+          'End-to-end Build Tooling (including Vulcanize)',
+          'Unit testing with Web Component Tester',
+          'Routing with Page.js',
+          'Offline support with the Platinum Service Worker Elements'
+        ];
+      }
+    });
+  })();
+</script>
+send:function(){
+
+
+
+
+}
+
+
+}

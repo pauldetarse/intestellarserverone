@@ -1,0 +1,73 @@
+<dom-module id="stellar-signup">
+	<template>
+		
+				<div class="horizontal-section">
+		
+          <paper-input name="username" label="Name" bind-value="{{username}}"  required></paper-input>
+
+          <br>
+			  <paper-input name="password" label="Password" bind-value="{{password}}"  required></paper-input>
+					  <paper-input name="email" label="Emai" bind-value="{{email}}"  required></paper-input>
+
+          <br>
+					
+			 <paper-button on-click="sendInformationToServer" raised>Send</paper-button>
+
+				
+	  </div>
+	
+	</template>
+
+</dom-module>
+
+<script is='stellar-signup'>
+	(function(){
+		Polymer({
+			is:'stellar-signup',
+			sendInformationToServer:function(){
+//alert('send');
+				console.log(this.username);
+				console.log(this.password);
+				console.log(this.email);
+				self=this;
+				register={email:self.email,
+						  username:self.username,
+						  password:self.password,
+						  imgData:'imgData',
+						 
+						  action:'register'
+						 };
+				eb.send('Authenticator',register,function(reply){
+										
+				alert(JSON.stringify(reply));						
+				});
+			
+			},
+			
+			ready:function(){
+				//alert(eb);
+				
+			},
+			factoryImpl(eb){
+				//alert('eb')
+			}
+		
+		})
+	
+	})()
+
+
+
+</script>
+
+
+/*
+
+.putString("password", password)
+                .putString("email", email)
+                .putString("flagUrl", flagUrl)
+                .putString("usrImg", usrImg)
+                .putNumber("balance", balance)
+                .putNumber("streak", streak)
+                .putNumber("level", level)
+*/

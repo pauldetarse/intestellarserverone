@@ -1,0 +1,68 @@
+<link rel="import" href="../../bower_components/google-youtube/google-youtube.html">
+<dom-module id="stellar-youtubeajax">
+  <template id="page-template">
+    <style>
+      div {
+        margin-bottom: 1em;
+      }
+    </style>
+  
+   
+	  <template is='dom-repeat' items='{{videos}}'>
+		
+		   <google-youtube video-id="{{item.url}}"
+                    width="853px"
+                    height="480px">
+    </google-youtube>
+		  
+		  
+		  <iron-ajax
+    auto
+    url="http://gdata.youtube.com/feeds/api/videos/"
+    params='{"alt":"json", "q":"chrome"}'
+    handle-as="json"
+    on-response="handleResponse"
+    debounce-duration="300"></iron-ajax>
+	  
+	  </template>
+   
+  </template>
+</dom-module>
+<script>
+ Youtube= Polymer({
+    is: 'stellar-youtubeajax',
+	
+	
+    properties: {
+	  videos:{
+		  type:Array,
+		  notify:true,
+		  value:[]
+	  
+	  },
+	
+      
+    },
+	
+   ready:function(){
+	   self=this;
+	   
+	     
+	   this.downloadFavoriteLinks(self);
+	 
+   
+   },
+   handleResponse:function(){
+	   alert('response');
+	
+	},
+	downloadFavoriteLinks: function(self){
+		
+
+		
+		
+	
+	}
+  });
+
+</script>

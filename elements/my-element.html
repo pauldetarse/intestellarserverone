@@ -1,0 +1,9 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<polymer-element name="my-element" noscript>
+  <template>
+    <span>Hello from <b>my-element</b>. This is my Shadow DOM.</span>
+	   <core-ajax url="/api/orders" auto response="{{resp}}"></core-ajax>
+    <textarea value="{{resp}}"></textarea>
+  </template>
+</polymer-element>

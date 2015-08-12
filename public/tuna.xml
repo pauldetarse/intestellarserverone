@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<response>
+    <people>
+        <person>
+            <name>
+                Bucky Roberts
+            </name>
+            <email> 
+             sdsssssssss456
+            </email>
+			<tel>
+			1-2345-222
+			</tel>
+        </person>
+        <person>
+            <name>
+                Mike Litories
+            </name>
+            <email> 
+                fff4567kll
+            </email>
+			<tel>
+					1-2345-223
+			
+			</tel>
+        </person>
+    
+    </people>
+
+</response>

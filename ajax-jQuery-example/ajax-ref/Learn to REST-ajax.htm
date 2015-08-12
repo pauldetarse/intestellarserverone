@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Learn to REST</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+
+    <h1>Learning to REST</h1>
+    <h3>The free practice RESTful API brought to you by LearnCode.academy...oh snap</h3>
+
+    <h2>How it works</h2>
+    <ul>
+      <li>Get any collection at /api/:user/:collection <a href="/api/learncode/friends">/api/learncode/friends</a> (pick any username and any collection name)</li>
+      <li>Get a specific item by adding an id <a href="/api/learncode/friends/1">/api/learncode/friends/1</a></li>
+      <li>Post a new friend {name: 'Superman', age: 29} to /api/learncode/friends and refresh <a href="/api/learncode/friends">/api/learncode/friends</a> (pick any username and any collection name)</li>...now there's 3 friends.
+      </li>
+      <li>What? How did it know my username and collection existed?  If it doesn't exist, it creates a blank collection for you to post to.</li>
+      <li>What's the catch?  <strong>1) All data resets nightly.  2) Anybody can modify anything...this ain't for your production app, baby.</strong></li>
+    </ul>
+
+<div class="code">
+    <h2>What should my Javascript code look like?</h2>
+    <ul>
+      <li>
+        <h3>Get a collection: GET /api/:user/:collection</h3>
+        <p>(Choose any username except <em>learncode</em> and collection name you like)</p>
+        <pre>
+$.ajax({
+  type: 'GET',
+  url: 'http://rest.learncode.academy/api/johnbob/friends',
+  success: function(data) {
+    console.log("I have friends!", data); //returns all of johnbob's friends
+  }
+});</pre>
+      </li>
+      <li>
+        <h3>Add a new item: POST /api/:user/:collection</h3>
+        <p>(Collection is created when you post your first item)</p>
+        <pre>
+$.ajax({
+  type: 'POST',
+  url: 'http://rest.learncode.academy/api/johnbob/friends',
+  data: {name: 'Billy Bob', age: 27},
+  success: function(data) {
+    console.log("Friend added!", data); //the new item is returned with an ID
+  }
+});</pre>
+      </li>
+      <li>
+        <h3>Get a single item: GET /api/:user/:collection/:id</h3>
+        <pre>
+$.ajax({
+  type: 'GET',
+  url: 'http://rest.learncode.academy/api/johnbob/friends/1',
+  success: function(data) {
+    console.log("Here's a friend!", data); //returns friend id#1
+  }
+});</pre>
+      </li>
+      <li>
+        <h3>Update an item with new data: PUT /api/:user/:collection/:id</h3>
+        <pre>
+$.ajax({
+  type: 'PUT',
+  data: {name: 'Billy Bob', age: 28},
+  url: 'http://rest.learncode.academy/api/johnbob/friends/1',
+  success: function() {
+    //no data...just a success (200) status code
+    console.log('Friend Updated Successfully!');
+  }
+});</pre>
+      </li>
+      <li>
+        <h3>Delete an item: DELETE /api/:user/:collection/:id</h3>
+        <pre>
+$.ajax({
+  type: 'DELETE',
+  url: 'http://rest.learncode.academy/api/johnbob/friends/1',
+  success: function() {
+    //no data...just a success (200) status code
+    console.log('Friend Deleted Successfully!');
+  }
+});</pre>
+      </li>
+    </ul>
+</div>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+  </body>
+</html>

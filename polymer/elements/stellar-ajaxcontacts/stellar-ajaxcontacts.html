@@ -1,0 +1,136 @@
+
+
+<dom-module id="stellar-ajaxcontacts">
+	<template>
+		<paper-material elevation="5">
+			<template is="dom-repeat" items={{contacts}}>
+			<paper-item>
+			<paper-item-body two-line>
+    <div>name</div>
+    <div secondary id="name">{{item.name}}</div>
+  </paper-item-body>
+			</paper-item>
+				</template>
+		</paper-material>
+			
+	
+	
+	
+	</template>
+	<script>
+		console.log('ajaxcontact');
+		Polymer({
+			is:'stellar-ajaxcontacts',
+			properties:{
+				contacts: {
+          type: Array,
+          notify: true,
+			value:[{name:'bob'},{name:'roger'}]
+        }
+			
+			},
+			ready:function(){
+				console.log('ajax ready');
+				 xmlHttp = this.createXMlHttpRequestObject();
+				this.process(xmlHttp);
+			
+			
+			
+			
+			},
+			handleResponse:function () {
+	var contact={};
+	var key;
+	var value;
+	
+	alert('response')
+	alert(xmlHttp.responseXML);
+	alert(xmlHttp.responseText);
+	
+x=xmlHttp.responseXML.getElementsByTagName("person");
+for (i=0;i<x.length;i++)
+  { 
+	   contact={};
+	  
+	  for(var p=0;p<x[i].childNodes.length;p++)
+	  {
+		  
+		  if(x[i].childNodes[p].nodeType==1){
+			  key=x[i].childNodes[p].nodeName;
+			  console.log(x[i].childNodes[p].nodeName);
+			  
+			  
+			  			  console.log(x[i].childNodes[p].childNodes[0].nodeValue);
+			  value=x[i].childNodes[p].childNodes[0].nodeValue;
+			  contact[key]=value;
+			  
+		  }
+		  
+			  
+ 
+	  }
+	  this.push('contacts',contact)
+  console.log("<br>");
+	  
+  }
+   
+},
+createXMlHttpRequestObject:function(){
+	var xmlHttp; 
+	console.log(' createXMlHttpRequestObject')
+	
+    if(window.XMLHttpRequest) {
+      xmlHttp = new XMLHttpRequest();  
+    }else{
+       xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    return xmlHttp;
+
+},
+process:function(){
+	self=this;
+	console.log('process');
+	
+    if (xmlHttp) {
+        try {
+            xmlHttp.open ("GET", "tuna.xml", true);
+            xmlHttp.onreadystatechange = this.handleStateChange;
+            xmlHttp.send(null);  
+        } catch (e) {
+            alert (e.toString());       
+        }
+    }
+
+
+},
+handleStateChange:function(){
+	console.log('handleStateChange');
+    if (xmlHttp.readyState == 4) {
+        if (xmlHttp.status == 200) {
+           try {
+                self.handleResponse(xmlHttp);
+           } catch (e) {
+                alert (e.toString());
+           }
+        } else {
+            alert (xmlHttp.statusText);
+        }
+    }
+
+}
+
+		});
+
+
+
+
+
+
+
+
+
+		
+		</script>
+</dom-module>
+    
+  

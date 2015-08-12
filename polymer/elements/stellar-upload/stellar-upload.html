@@ -1,0 +1,75 @@
+<dom-module id="stellar-upload">
+	<style>
+		paper-button{
+			background-color:cornflowerblue
+		
+		}
+		
+		
+	
+	</style>
+	<template>
+<paper-input label="Input label" bind-value="{{url}}"></paper-input>
+		<paper-button  on-tap="upload" raised>raised button</paper-button>
+		
+		<iron-ajax id="youtubeAjax"
+    auto
+    url="/api/youtube/"
+    params='{"url":"non","username":"non"}'
+    handle-as="json"
+    on-response="handleResponse"
+    method="post"
+    debounce-duration="300"></iron-ajax>
+		
+		  
+	  <iron-localstorage name="my-app-storage"
+    value="{{cartoon}}"
+    
+  ></iron-localstorage>
+		
+		
+</template>
+	<script>
+	Upload=Polymer({
+		
+		is:"stellar-upload",
+		properties:{
+			url:{
+			type:String,
+		
+			notify:true
+			},
+			username:{
+				type:String,
+				notify:true
+			}
+		},
+		
+
+		ready:function(){
+			//this.upload();
+		},
+		hresponse: function(request) {
+			console.log(request.detail.response);
+    		console.log(this.$.ajax.lastResponse);
+  		},
+		upload:function(){
+			console.log(this.get("username"));
+			alert(this.url.lastIndexOf('='));
+			console.log(localStorage.getItem('username'));
+			
+		
+			alert(this.url.substring(this.url.lastIndexOf('=')+1));
+			this.url=this.url.substring(this.url.lastIndexOf('=')+1)
+			this.username="bob";
+			this.$.youtubeAjax.generateRequest();
+			this.username=localStorage.getItem('username');
+		}
+				
+			
+			
+			});
+		
+	</script>
+	
+	</dom-module>

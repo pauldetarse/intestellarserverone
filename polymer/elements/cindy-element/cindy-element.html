@@ -1,0 +1,122 @@
+<link href="../core-scaffold/core-scaffold.html" rel="import">
+<link href="../core-header-panel/core-header-panel.html" rel="import">
+<link href="../core-menu/core-menu.html" rel="import">
+<link href="../core-item/core-item.html" rel="import">
+<link href="../core-icon-button/core-icon-button.html" rel="import">
+<link href="../core-toolbar/core-toolbar.html" rel="import">
+<link href="../core-field/core-field.html" rel="import">
+<link href="../core-icon/core-icon.html" rel="import">
+<link href="../core-input/core-input.html" rel="import">
+<link href="../core-icons/core-icons.html" rel="import">
+<link href="../speech-mic/speech-mic.html" rel="import">
+<link href="../core-menu/core-submenu.html" rel="import">
+<link href="../google-map/google-map.html" rel="import">
+<link href="../google-map/google-map-search.html" rel="import">
+
+<polymer-element name="cindy-element">
+
+  <template>
+    <style>    
+      #design_host {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+      }
+      #core_scaffold {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+      }
+      #core_header_panel {
+        background-color: rgb(255, 255, 255);
+      }
+      #core_toolbar {
+        background-color: rgb(79, 125, 201);
+        color: rgb(255, 255, 255);
+      }
+      #core_menu {
+        font-size: 16px;
+      }
+      #google_map {
+        width: 100%;
+        height: 100%;
+        display: block;
+        left: 0px;
+        top: 0px;
+        position: absolute;
+      }
+      #google_map_search {
+        left: 480px;
+        top: 310px;
+        position: absolute;
+      }
+      #core_field {
+        left: 18px;
+        top: 10px;
+        position: absolute;
+        background-color: rgb(255, 255, 255);
+        width: 80%;
+      }
+      #core_field1 {
+        background-color: rgb(254, 253, 255);
+      }
+      #core_icon {
+        height: 24px;
+        width: 24px;
+      }
+      #svg {
+        pointer-events: none;
+        width: 24px;
+        height: 24px;
+        vertical-align: middle;
+      }
+      #input {
+        padding: 15px;
+      }
+      #speech_mic {
+        display: none;
+      }
+    </style>
+    <core-scaffold id="core_scaffold">
+      <core-header-panel mode="seamed" id="core_header_panel" flex navigation>
+        <core-toolbar id="core_toolbar">
+          <core-field id="core_field" icon="search" theme="core-light-theme" center horizontal layout>
+      </core-field>
+          <core-field id="core_field1" layout horizontal center theme="core-light-theme" icon="search">
+            <core-icon icon="search" id="core_icon"></core-icon>
+            <input id="input" is="core_input" flex>
+            <speech-mic id="speech_mic"></speech-mic>
+          </core-field>
+        </core-toolbar>
+        <core-menu selected="1" selectedindex="1" id="core_menu" theme="core-light-theme">
+          <core-item id="core_item" on-tap="{{ showRoad }}" label="Roadmap" icon="settings" layout center horizontal></core-item>
+          <core-item id="core_item1" on-tap="{{ showSat }}" label="Satellite" icon="settings" layout center horizontal active></core-item>
+        </core-menu>
+      </core-header-panel>
+      <div id="div" tool>Welcome</div>
+      
+      <google-map latitude="{{ $.google_map_search.result.latitude }}" longitude="{{ $.google_map_search.result.longtitude }}" zoom="18" id="google_map"></google-map>
+      <google-map-search map="{{ $.google_map.map }}" query="{{ $.input.value }}" id="google_map_search"></google-map-search>
+    
+    </core-scaffold>
+  </template>
+
+  <script>
+
+    Polymer({
+      showRoad: function (){
+        this.$.google_map.mapType = 'roadmap';
+      },
+      showSat: function (){
+        this.$.google_map.mapType = 'satellite';
+      }
+    });
+
+  </script>
+
+</polymer-element>

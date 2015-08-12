@@ -1,0 +1,176 @@
+<dom-module id="stellar-message">
+	<style>
+	
+		 section {
+      height: 100%;
+    }
+
+    .header, .footer {
+      padding: 8px 24px;
+    }
+
+    .footer {
+      text-align: right;
+    }
+		#button {
+    background: green;
+    color: yellow;
+}
+	
+	</style>
+	
+		
+
+   
+
+ <template>
+
+
+<div class="fullbleed">
+	
+	
+	
+       
+        <div>{{sender}}</div>
+     
+      <iron-list items="[[messages]]" as="item">
+        <template>
+          <div>
+            <div class="item">
+              
+              <div class="pad">
+                <div class="primary">[[item.receiver]]</div>
+                
+                <div class="secondary dim">[[item.message]]</div>
+              </div>
+              
+            </div>
+          </div>
+        </template>
+      </iron-list>
+   
+
+  
+
+    
+    <div>
+		<iron-icon icon="communication:chat-bubble"></iron-icon>
+     
+		<textarea  bind-value="{{message}}"  id="t1"></textarea>
+		<iron-autogrow-textarea id="a1">
+		</iron-autogrow-textarea>
+		<paper-button on-click='sendMessage' id="button" raised>Send</paper-button>
+    </div>
+
+  
+			
+		
+		
+		
+  			
+			
+      
+      
+		</div>
+
+	</template>
+</dom-module>
+
+<script>
+	(function(){
+		Polymer({
+			is:'stellar-message',
+			properties:{
+				messages:{
+					type:Array,
+					value:[{receiver:'bob',message:"l'abîme est immense,soyez sur vos gardes"}],
+					notify:true
+					
+				
+				
+				},
+				message:{
+					type:String,
+					notify:true,
+					value:'asas'
+				
+				},
+				sender:{
+					type:String,
+					notify:true
+				
+				
+				}
+				
+			
+			
+			
+		},
+			sendMessage:function(){
+				var receiver=localStorage.getItem('receiver');
+				console.log(JSON.stringify({sender:self.sender,receiver:receiver,message:self.message}));
+			
+		
+	
+		eb.send('SendMessage',{sender:self.sender,receiver:receiver,message:self.message},function(reply){
+			 
+			
+			console.log(reply.status);
+			
+			
+				
+	
+		
+			
+		})
+		
+		},
+      ready: function() {
+		  self=this;
+		  
+		 
+		  
+		 
+		  	
+
+eb.onclose=function(){
+	busopen=false;
+		self.openbus();
+
+}
+eb.onopen=function(){
+	busopen=true;
+	
+    console.log('eb.onopen');
+			 console.log('message on open');
+		  
+		   
+		  self.sender=localStorage.getItem('username');
+			 console.log(self.sender);
+		   eb.registerHandler(this.sender+'Chat',function(reply){
+		   		//alert(JSON.stringify(reply));
+    
+  
+   
+        
+    
+		   });
+	  
+		
+							  
+		
+		
+		
+};
+	
+	  }
+	
+	
+		});
+	
+	
+	})()
+
+
+
+</script>

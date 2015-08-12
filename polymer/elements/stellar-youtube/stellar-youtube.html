@@ -1,0 +1,91 @@
+<link rel="import" href="../../bower_components/google-youtube/google-youtube.html">
+<dom-module id="stellar-youtube">
+  <template id="page-template">
+    <style>
+      div {
+        margin-bottom: 1em;
+      }
+    </style>
+  
+   
+	  <template is='dom-repeat' items='{{videos}}'>
+		 
+		   <google-youtube video-id="{{item.url}}"
+                    width="853px"
+                    height="480px">
+    </google-youtube>
+	  
+	  </template>
+   
+  </template>
+</dom-module>
+<script>
+ Youtube= Polymer({
+    is: 'stellar-youtube',
+	eb:null,
+	
+    properties: {
+	  videos:{
+		  type:Array,
+		  notify:true,
+		  value:[]
+	  
+	  }
+      
+    },
+	  factoryImpl: function(eb) {
+		  eb=eb
+    
+   
+  },
+
+	  created: function() {
+    console.log(this.localName + '#' + this.id + ' was created');
+  },
+
+  attached: function() {
+    console.log(this.localName + '#' + this.id + ' was attached');
+  },
+
+  detached: function() {
+    console.log(this.localName + '#' + this.id + ' was detached');
+  },
+
+  attributeChanged: function(name, type) {
+    console.log(this.localName + '#' + this.id + ' attribute ' + name +
+      ' was changed to ' + this.getAttribute(name));
+  },
+   ready:function(){
+	   self=this;
+	   
+	     
+	   this.downloadFavoriteLinks(self);
+	 
+   
+   },
+	downloadFavoriteLinks: function(self){
+
+		
+		
+		  eb=new vertx.EventBus('/eventbus');
+		eb.onopen=function(){
+				console.log('youtube onopen');
+		var username=localStorage.getItem('username');
+		
+			eb.send('ListYoutubeLinks',{username:'bob'},function(reply){
+				console.log('ListYoutubeLinks');
+				console.log(JSON.stringify(reply));
+				alert(JSON.stringify(reply));
+				for(var i=0;i<reply.length;i++)
+					self.unshift('videos',reply[i]);
+			
+			
+			});
+		
+		
+		};
+	
+	}
+  });
+
+</script>

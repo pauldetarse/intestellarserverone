@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>jquery Ajax tutorial</title>
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+	<!-- link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"-->
+      <link href="css/font-awesome.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="css/style.css" rel="stylesheet">
+  </head>
+
+  <body>
+	 
+
+		<div class="container">
+				
+			 	<button id="list-order" style="border-radius:5px">list all orders</button>
+           
+                <h1>jQuery  Ajax</h1>
+				<h2>Coffee Orders</h2>
+                <ul id="orders"></ul>
+                    
+				<template id ="order-template">
+				<li> 
+				<p><strong>name: </strong>
+				<span class="noedit">{{name}}</span>
+				<input class="edit name"/>
+				</p>
+				
+				<p><strong>drink: </strong>
+				<span class="noedit">{{drink}}</span>
+				<input class="edit drink"/>
+				</p>
+				
+				<button data-id='{{id}}' class= 'remove' id="remove">X</button>
+				<button class="editOrder nodedit" id="edit">Edit</button>
+				<button class="saveEdit edit">Save</button>
+				<button class="cancelEdit edit">Cancel</button>
+				</li>
+				</template>
+				
+				<h4>Add a coffee Order</h4>
+				<p>name: <input type="text" id="name"></p>
+				<p>drink: <input type="text" id="drink"></p>
+				<button id ="add-order">Add!</button>
+
+        </div>
+
+
+
+      
+	
+    
+   
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/main-ajaxOnly2.js"></script>
+      <script src="js/mustache.js"></script>
+	<script>
+	
+
+	</script>
+  </body>
+</html>
+<!--ref-->
+<!-- https://www.youtube.com/watch?v=GbNWPn8vodo -->

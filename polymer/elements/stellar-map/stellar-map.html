@@ -1,0 +1,172 @@
+<dom-module id="stellar-map">
+	<style>
+  google-map {
+    height: 600px;
+  }
+</style>
+	<template>
+		<!--google-map latitude="37.77493" longitude="-122.41942"></google-map>
+	<google-map  id="map" disable-default-ui zoom="15"></google-map-->
+		
+		 <google-map-search map="{{map}}" query="{{query}}"
+                     result="{{result}}"></google-map-search>
+		<paper-input bind-value="{{query}}" label="query"></paper-input>
+		<paper-input bind-value="{{latitude}}" label="latitude">Latitude</paper-input>
+		<paper-input bind-value="{{longitude}}" label="longitude">Longitude</paper-input>
+		 <paper-button on-click="searchMap" raised>Send</paper-button>
+		<span>{{query}}</span>
+  <google-map id="map" map="{{map}}" latitude="{{latitude}}"
+              longitude="{{longitude}}"> <google-map-marker  id="marker" latitude="{{result.latitude}}" longitude="{{result.longitude}}"
+      title="bob"></google-map-marker>
+	  <google-map-marker latitude="45" longitude="-73"></google-map-marker>
+		</google-map>
+		
+  <div>Result:
+    <span>{{result.latitude}}</span>,
+    <span>{{result.longitude}}</span>
+  </div>
+
+
+		
+		
+	</template>
+	
+	<script>
+		(function(){
+			Polymer({
+				is:'stellar-map',
+				properties:{
+					result:{
+						type:Object,
+					notify:true,
+					 observer: 'resultChanged'
+					},
+					latitude:{
+						type:String,
+						notify:true,
+						value:10.58
+					
+					},
+					longitude:{
+						type:String,
+						notify:true,
+						value:106.40
+					
+					},
+					query:"Montreal"
+				
+				},
+				
+				
+				ready:function(){
+					console.log('map ready');
+					//this.loadMap();
+					Polymer.dom(this.root).querySelector('google-map-search').search
+				//	Polymer.dom(this.root).querySelector('map').latitude=result.latitude;
+					//Polymer.dom(this.root).querySelector('map').longitude=result.longitude;
+					//Polymer.dom(this.root).querySelector('google-map-search').search
+					
+					 // document.querySelector('google-map-search').search();
+				
+				},
+				resultChanged:function(oldsrc,newsrc){
+				//	alert(JSON.stringify(oldsrc))
+					
+					//Polymer.dom(this.root).querySelector('google-map-search').search
+				
+				
+				},
+				searchMap:function(){
+					alert('search');
+					var marker=document.createElement('google-map-marker');
+					marker.latitude=this.result.latitude;
+					marker.longitude=this.result.longitude;
+					Polymer.dom(this.root).querySelector('google-map').appendChild(marker);
+					//this.$.marker.latitude=this.result.latitude;
+					//	this.$.marker.longitude=this.result.longitude;
+					
+					alert(JSON.stringify(this.result));
+					Polymer.dom(this.root).querySelector('#map').latitude=this.result.latitude;
+					Polymer.dom(this.root).querySelector('#map').longitude=this.result.longitude;
+					//Polymer.dom(this.root).querySelector('google-map-search').search
+				
+				},
+				
+				loadMap:function(){
+					this.$.map
+
+  var map = this.$.map;
+  map.latitude = 16;
+  map.longitude = 106;
+  map.addEventListener('google-map-ready', function(e) {
+    alert('Map loaded!');
+  });
+				
+			
+			
+			
+			
+			
+				}
+			
+			
+			
+			
+			
+			
+			});
+		
+		
+		
+		
+		
+		})()
+	
+	
+	
+	
+	</script>
+	
+	
+
+
+
+
+
+
+
+</dom-module>
+
+
+/*
+var map;
+var service;
+var infowindow;
+
+function initialize() {
+  var pyrmont = new google.maps.LatLng(-33.8665433,151.1956316);
+
+  map = new google.maps.Map(document.getElementById('map'), {
+      center: pyrmont,
+      zoom: 15
+    });
+
+  var request = {
+    location: pyrmont,
+    radius: '500',
+    query: 'restaurant'
+  };
+
+  service = new google.maps.places.PlacesService(map);
+  service.textSearch(request, callback);
+}
+
+function callback(results, status) {
+  if (status == google.maps.places.PlacesServiceStatus.OK) {
+    for (var i = 0; i < results.length; i++) {
+      var place = results[i];
+      createMarker(results[i]);
+    }
+  }
+}
+									   */
