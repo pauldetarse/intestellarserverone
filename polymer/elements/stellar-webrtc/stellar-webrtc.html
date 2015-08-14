@@ -351,6 +351,7 @@ stop:function() {
 		this.room = prompt('Enter room name:');
 		this.socket=io('localhost:8080');
 			if (this.room !== '') {
+				alert('create or join room');
   console.log('Create or join room', this.room);
   this.socket.emit('create or join', this.room);
 }
