@@ -349,7 +349,9 @@ stop:function() {
                     secure: false
         }
 		this.room = prompt('Enter room name:');
+		//	http://interstellarserverone-startrade.rhcloud.com/
 		this.socket=io('localhost:8080');
+		this.socket=io('http://interstellarserverone-startrade.rhcloud.com:8000');
 			if (this.room !== '') {
 				alert('create or join room');
   console.log('Create or join room', this.room);
