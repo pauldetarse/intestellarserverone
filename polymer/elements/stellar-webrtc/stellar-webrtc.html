@@ -16,22 +16,35 @@
 			color:white
 		
 		}
+		
 	
 	
 	</style>
 	<template>
 	<div>
+		
+		
+		<div id="videos">	
+		<paper-material elevation="5" >
+   <video id="localVideo" autoplay >
+</paper-material>
 	
-	 <video id="localVideo" autoplay></video>
-		<iron-autogrow-textarea>  <textarea id="dataChannelSend" value="{{localData::input}}"></textarea></iron-autogrow-textarea>
-		<iron-autogrow-textarea>  <textarea id="t1" value="{{remoteData::input}}"></textarea></iron-autogrow-textarea>
+		
+		<paper-material elevation="5" >
+   <video id="remoteVideo" autoplay>
+</paper-material>
+			</div>
+	
+	 
+		
 		
 	 
-	  <video id="remoteVideo" autoplay></video>
+	 
+		<iron-autogrow-textarea>  <textarea id="dataChannelSend" value="{{localData::input}}"></textarea></iron-autogrow-textarea>
+		<iron-autogrow-textarea>  <textarea id="t1" value="{{remoteData::input}}"></textarea></iron-autogrow-textarea>
 		<paper-button id="send" raised>Send</paper-button>
 		
-		<h1>stellar2</h1>
-		<h1>{{localData}}</h1>
+		
 		<span>{{localData}}</span>
 	  </div>
 	</template>
@@ -52,12 +65,12 @@
 			
 			},
 			localData:{
-			value:"roger",
+			value:"",
 			notify:true
 			},
 			remoteData:{
 				type:Object,
-				value:'Bob',
+				value:'',
 				notify:true,
 			
 			},
@@ -208,7 +221,7 @@
   }
 },
 		handleReceiveChannelStateChange:function() {
-  var readyState = receiveChannel.readyState;
+  var readyState = this.receiveChannel.readyState;
   trace('Receive channel state is: ' + readyState);
   // If channel ready, enable user's input
   if (readyState == "open") {
