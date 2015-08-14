@@ -48,6 +48,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		  color: #fff;
 	  
 	  }
+	  .paper-font-title{
+	  	 @apply(--paper-font-display1)
+	  }
 	  paper-menu{
 	  /*	var(--paper-menu-selected-item,#000);
 		 --paper-menu-background-color:#EEE;
@@ -158,7 +161,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <!-- Drawer Toolbar -->
         <paper-toolbar id="drawerToolbar">
-          <span class="paper-font-title">Menu</span>
+          <span class="paper-font-title">Stellar</span>
 		<span flex></span>
 		  <paper-button raised  onclick="material()">Material</paper-button>
         </paper-toolbar>
@@ -182,6 +185,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <iron-icon icon="social:people"></iron-icon>
                 <span>Contacts</span>
               </a>
+			   <a data-route="webrtc" href="/webrtc">
+				   <iron-icon icon="av:videocam"></iron-icon>
+                <span>Web rtc</span>
+			  
+			  </a>
 			  
 			   <a data-route="youtube" href="/youtube">
                 <iron-icon icon="youtube-searched-for"></iron-icon>

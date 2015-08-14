@@ -4,19 +4,6 @@
 <!--script src='../../js/webrtc/completeNodeClientWithDataChannel.js'></script-->
 
 
-var pc_constraints = {
-  'optional': [
-    {'DtlsSrtpKeyAgreement': true}
-  ]};
-
-var sdpConstraints = {};
-
- var option={ reconnection: true, 
-                    reconnectionDelay: 2000,
-                    reconnectionAttempts: 100,
-                    secure: false
-                  }
-
 
 
 <dom-module id="stellar-webrtc">
@@ -321,13 +308,13 @@ stop:function() {
 				navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 		
 		},
-		bob:function(){alert(self)},
+		
 		handleUserMedia: function(stream) {
-			alert(this);
+		
         this.localStream = stream;
         attachMediaStream(localVideo, stream);
         console.log('Adding local stream.');
-		this.bob();
+		
         this.sendMessage('got user media');
 		},
 		handleUserMediaError:function(error){
@@ -337,7 +324,7 @@ stop:function() {
 		
 		
 		ready:function(){
-			this.bob();
+			
 			var self=this;
 			
 		
@@ -434,7 +421,7 @@ stop:function() {
     				self.handleRemoteHangup();
   				}
 		});
-			alert('alert2');
+			
 		
 		}
 		
