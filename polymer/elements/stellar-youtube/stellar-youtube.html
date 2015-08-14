@@ -67,23 +67,21 @@
 
 		
 		
-		  eb=new vertx.EventBus('/eventbus');
-		eb.onopen=function(){
+		  
+
 				console.log('youtube onopen');
 		var username=localStorage.getItem('username');
 		
-			eb.send('ListYoutubeLinks',{username:'bob'},function(reply){
-				console.log('ListYoutubeLinks');
-				console.log(JSON.stringify(reply));
-				alert(JSON.stringify(reply));
-				for(var i=0;i<reply.length;i++)
-					self.unshift('videos',reply[i]);
-			
-			
-			});
 		
 		
-		};
+			
+				//	self.unshift('videos',reply[i]);
+			
+			
+			
+		
+		
+		//};
 	
 	}
   });

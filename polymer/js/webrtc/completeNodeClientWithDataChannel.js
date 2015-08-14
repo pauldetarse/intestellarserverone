@@ -22,15 +22,15 @@ var receiveTextarea = document.getElementById("dataChannelReceive");
 // HTML5 <video> elements
 var localVideo = document.querySelector('#localVideo');
 var remoteVideo = document.querySelector('#remoteVideo');
-var start = document.querySelector('#start');
-start.addEventListener('click',function(){
-	console.log('start');
-	checkAndStart();
+//var start = document.querySelector('#start');
+//start.addEventListener('click',function(){
+//	console.log('start');
+//	checkAndStart();
 
-})
+//})
 
 // Handler associated with 'Send' button
-sendButton.onclick = sendData;
+//sendButton.onclick = sendData;
 
 // Flags...
 var isChannelReady = false;
@@ -82,6 +82,7 @@ if (room !== '') {
 }
 
 // Set getUserMedia constraints
+var constraints = {video: true, audio: true};
 
 // From this point on, execution proceeds based on asynchronous events...
 

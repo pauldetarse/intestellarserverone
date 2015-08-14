@@ -52,8 +52,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   (function () {
 	  var c=[];
     Polymer({
-		busopen:false,
-		eb:null,
+		
       is: 'stellar-login',
 		
       properties: {
@@ -64,10 +63,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			return['hey'];
 		
 			}
-        },factoryImpl:function(eb){
-			eb=eb;
-		
-		},
+        },
 		username:{
 			type:String,
 			notify:true,
@@ -147,11 +143,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		},
 		
       ready: function() {
-		  eb.onopen=function(){
-			 console.log('login onopen');
 		  
-		  
-		  }
 		  
 		  
         this.items = [
@@ -166,12 +158,3 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     });
   })();
 </script>
-send:function(){
-
-
-
-
-}
-
-
-}

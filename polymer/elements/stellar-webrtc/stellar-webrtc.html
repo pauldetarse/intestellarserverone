@@ -1,0 +1,472 @@
+	<!--script src="/socket.io/socket.io.js"></script-->
+	<script src='../../js/webrtc/socket.io.js'></script>
+<script src='../../js/webrtc/adapter.js'></script>
+<!--script src='../../js/webrtc/completeNodeClientWithDataChannel.js'></script-->
+
+
+var pc_constraints = {
+  'optional': [
+    {'DtlsSrtpKeyAgreement': true}
+  ]};
+
+var sdpConstraints = {};
+
+ var option={ reconnection: true, 
+                    reconnectionDelay: 2000,
+                    reconnectionAttempts: 100,
+                    secure: false
+                  }
+
+
+
+<dom-module id="stellar-webrtc">
+	<style>
+	div#p{
+		 background-image: url("../../images/stellar.jpeg");
+		 }
+		paper-button{
+			background-color: black;
+			color:white
+		
+		}
+	
+	
+	</style>
+	<template>
+	<div>
+	
+	 <video id="localVideo" autoplay></video>
+		<iron-autogrow-textarea>  <textarea id="dataChannelSend" value="{{localData::input}}"></textarea></iron-autogrow-textarea>
+		<iron-autogrow-textarea>  <textarea id="t1" value="{{remoteData::input}}"></textarea></iron-autogrow-textarea>
+		
+	 
+	  <video id="remoteVideo" autoplay></video>
+		<paper-button id="send" raised>Send</paper-button>
+		
+		<h1>stellar2</h1>
+		<h1>{{localData}}</h1>
+		<span>{{localData}}</span>
+	  </div>
+	</template>
+	<script>
+	Polymer({
+		is: 'stellar-webrtc',
+		properties:{
+			self:{
+				type:Object,
+				value:this
+			}
+			,
+			socket:{
+				type:Object
+			},
+			pc:{
+				type:Object
+			
+			},
+			localData:{
+			value:"roger",
+			notify:true
+			},
+			remoteData:{
+				type:Object,
+				value:'Bob',
+				notify:true,
+			
+			},
+			sendChannel:{
+				type:Object
+			
+			},
+			receiveChannel:{
+				type:Object
+			
+			},
+			pc_constraints : {
+			type:Object,
+  			value:{'optional': [
+    			{'DtlsSrtpKeyAgreement': true}
+  			]}},
+			sdpConstraints: {
+				type:Object,
+				value:{}
+			},
+			constraints : { 
+				type:Object,
+				value:{video: true, audio: true}
+			},
+
+
+			isChannelReady: {
+				type: Boolean,
+				value: false
+			},
+			isInitiator: {
+				value: false,
+				type: Boolean
+			
+			},
+			isStarted: {
+				value: false,
+				type: Boolean
+			
+			},
+			pc_config: {
+				type:Object,
+				value:function(){
+					detectedBrowser=webrtcDetectedBrowser === 'firefox' ?
+  {'iceServers':[{'url':'stun:23.21.150.121'}]} : // IP address
+  {'iceServers': [{'url': 'stun:stun.l.google.com:19302'}]};
+				//console.log(detectedBrowser);
+					return detectedBrowser;
+		
+				}
+			},
+		
+			localStream: Object,
+			remoteStream: Object,
+			pc: Object,
+			room:String
+		},
+		sendMessage:function(message){
+  			console.log('Sending message: ', message);
+  			this.socket.emit('message', {'message':message,'channel':this.room});
+		},
+		 checkAndStart:function() {
+			console.log('checkAndStart')
+			console.log('isStarted'+this.isStarted);
+			console.log('localStream'+this.localStream);
+			console.log('isChannelReady'+this.isChannelReady);
+			console.log('isInitiator'+this.isInitiator);
+
+  		if (!this.isStarted && typeof this.localStream != 'undefined' && this.isChannelReady) {
+	  		console.log('before do call');
+        	this.createPeerConnection();
+    		this.isStarted = true;
+    		if (this.isInitiator) {
+				console.log('after do call');
+      			this.doCall();
+    		}
+  		}
+		},
+		createPeerConnection:function() {
+  		try {
+    		this.pc = new RTCPeerConnection(this.pc_config, this.pc_constraints);
+
+    		this.pc.addStream(this.localStream);
+
+    		this.pc.onicecandidate = this.handleIceCandidate.bind(this);
+    		console.log('Created RTCPeerConnnection with:\n' +
+      		'  config: \'' + JSON.stringify(this.pc_config) + '\';\n' +
+      		'  constraints: \'' + JSON.stringify(this.pc_constraints) + '\'.');
+  			} catch (e) {
+    		console.log('Failed to create PeerConnection, exception: ' + e.message);
+			alert('Cannot create RTCPeerConnection object.');
+      return;
+  		}
+
+  this.pc.onaddstream =this.handleRemoteStreamAdded.bind(this);
+  this.pc.onremovestream =this.handleRemoteStreamRemoved(this);
+
+  if (this.isInitiator) {
+    try {
+      // Create a reliable data channel
+      this.sendChannel = this.pc.createDataChannel("sendDataChannel",
+        {reliable: true});
+      trace('Created send data channel');
+    } catch (e) {
+      alert('Failed to create data channel. ');
+      trace('createDataChannel() failed with exception: ' + e.message);
+    }
+    this.sendChannel.onopen = this.handleSendChannelStateChange.bind(this);
+    this.sendChannel.onmessage = this.handleMessage.bind(this);
+    this.sendChannel.onclose = this.handleSendChannelStateChange.bind(this);
+  } else { // Joiner
+    this.pc.ondatachannel = this.gotReceiveChannel.bind(this);
+  }
+},
+		// Data channel management
+		sendData:function() {
+ 
+  			if(this.isInitiator) this.sendChannel.send(this.localData);
+  			else this.receiveChannel.send(this.localData);
+  			trace('Sent data: ' + this.localData);
+		},
+		gotReceiveChannel:function(event) {
+  			trace('Receive Channel Callback');
+  			this.receiveChannel = event.channel;
+  			this.receiveChannel.onmessage = this.handleMessage.bind(this);
+  			this.receiveChannel.onopen = this.handleReceiveChannelStateChange.bind(this);
+  			this.receiveChannel.onclose = this.handleReceiveChannelStateChange.bind(this);
+		},
+		 handleMessage:function(event) {
+			 
+  this.remotedeData+= event.data + '\n';
+		 },
+		handleSendChannelStateChange:function() {
+	console.log(' handleSendChannelStateChange');
+	
+  var readyState = this.sendChannel.readyState;
+  console.log(readyState);
+  trace('Send channel state is: ' + readyState);
+  // If channel ready, enable user's input
+  if (readyState == "open") {
+    this.$.dataChannelSend.disabled = false;
+    this.$.dataChannelSend.focus();
+    this.$.dataChannelSend.placeholder = "";
+    this.$.sendButton.disabled = false;
+  } else {
+    this.$.dataChannelSend.disabled = true;
+    this.$.sendButton.disabled = true;
+  }
+},
+		handleReceiveChannelStateChange:function() {
+  var readyState = receiveChannel.readyState;
+  trace('Receive channel state is: ' + readyState);
+  // If channel ready, enable user's input
+  if (readyState == "open") {
+            this.$.dataChannelSend.disabled = false;
+            this.$.dataChannelSend.focus();
+            this.$.dataChannelSend.placeholder = "";
+            this.$.sendButton.disabled = false;
+          } else {
+            this.$.dataChannelSend.disabled = true;
+            this.$.sendButton.disabled = true;
+          }
+},
+		// ICE candidates management
+		handleIceCandidate:function(event) {
+  			console.log('handleIceCandidate event: ', event);
+  			if (event.candidate) {
+    			this.sendMessage({
+      			type: 'candidate',
+      			label: event.candidate.sdpMLineIndex,
+      			id: event.candidate.sdpMid,
+      			candidate: event.candidate.candidate});
+  			} else {
+    		console.log('End of candidates.');
+  			}
+		},
+		doCall:function() {
+  			console.log('Creating Offer...');
+			this.pc.createOffer(this.setLocalAndSendMessage.bind(this), this.onSignalingError.bind(this), this.sdpConstraints);
+		},
+		// Signalling error handler
+		onSignalingError:function(error) {
+        	console.log('Failed to create signaling message : ' + error.name);
+		},
+		// Create Answer
+		doAnswer:function() {
+  			console.log('Sending answer to peer.');
+  			this.pc.createAnswer(this.setLocalAndSendMessage.bind(this), this.onSignalingError.bind(this), this.sdpConstraints);
+		},
+		// Success handler for both createOffer()
+// and createAnswer()
+		setLocalAndSendMessage:function(sessionDescription) {
+  			this.pc.setLocalDescription(sessionDescription);
+  			this.sendMessage(sessionDescription);
+		},
+		// Remote stream handlers...
+
+handleRemoteStreamAdded:function(event) {
+  console.log('Remote stream added.');
+  attachMediaStream(this.$.remoteVideo, event.stream);
+  console.log('Remote stream attached!!.');
+  this.remoteStream = event.stream;
+},
+	handleRemoteStreamRemoved:function(event) {
+  console.log('Remote stream removed. Event: ', event);
+},
+
+// Clean-up functions...
+
+hangup:function() {
+  console.log('Hanging up.');
+  this.stop();
+  this.sendMessage('bye');
+},
+
+handleRemoteHangup:function() {
+  console.log('Session terminated.');
+  this.stop();
+  this.isInitiator = false;
+},
+
+stop:function() {
+  this.isStarted = false;
+  if (this.sendChannel) this.sendChannel.close();
+  if (this.receiveChannel) this.receiveChannel.close();
+  if (this.pc) this.pc.close();
+  this.pc = null;
+  this.sendButton.disabled=true;
+},
+
+
+
+
+
+
+
+			detectBrowser:function(){
+				detectedBrowser=webrtcDetectedBrowser === 'firefox' ?
+  {'iceServers':[{'url':'stun:23.21.150.121'}]} : // IP address
+  {'iceServers': [{'url': 'stun:stun.l.google.com:19302'}]};
+				console.log(detectedBrowser);
+				return detectedBrowser;
+			
+	
+			},
+		navigatorGetUserMedia:function(){
+			return navigator.getUserMedia ||
+				navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+		
+		},
+		bob:function(){alert(self)},
+		handleUserMedia: function(stream) {
+			alert(this);
+        this.localStream = stream;
+        attachMediaStream(localVideo, stream);
+        console.log('Adding local stream.');
+		this.bob();
+        this.sendMessage('got user media');
+		},
+		handleUserMediaError:function(error){
+        console.log('navigator.getUserMedia error: ', error);
+		},
+
+		
+		
+		ready:function(){
+			this.bob();
+			var self=this;
+			
+		
+			
+	    var option={ reconnection: true, 
+                    reconnectionDelay: 2000,
+                    reconnectionAttempts: 100,
+                    secure: false
+        }
+		this.room = prompt('Enter room name:');
+		this.socket=io('localhost:8080');
+			if (this.room !== '') {
+  console.log('Create or join room', this.room);
+  this.socket.emit('create or join', this.room);
+}
+		//	var localVideo = document.querySelector('#localVideo');
+//var remoteVideo = document.querySelector('#remoteVideo');
+			var localVideo= this.$.localVideo
+			var removeVideo= this.$.removeVideo
+		//	var socket = io("http://"+document.location.hostname+":8000",option);
+//var socket=io.connect('http://stellarserverone-startrade.rhcloud.com:8000');
+		// Server-mediated message exchanging...
+
+		// 1. Server-->Client...
+
+		// Handle 'created' message coming back from server:
+		// this peer is the initiator
+			this.socket.on('created', function (room){
+			
+  			console.log('Created room ' + room);
+  			self.isInitiator = true;
+			navigator.getUserMedia=self.navigatorGetUserMedia();
+
+  			// Call getUserMedia()
+				console.log(self.constraints);
+  			navigator.getUserMedia(self.constraints, self.handleUserMedia.bind(self), self.handleUserMediaError.bind(self));
+  			console.log('Getting user media with constraints', self.constraints);
+
+  			self.checkAndStart();
+			});
+
+		// Handle 'full' message coming back from server:
+		// self peer arrived too late
+		this.socket.on('full', function (room){
+  		console.log('Room ' + room + ' is full');
+		});
+
+		// Handle 'join' message coming back from server:
+		// another peer is joining the channel
+		this.socket.on('join', function (room){
+  		console.log('Another peer made a request to join room ' + room);
+  		console.log('self peer is the initiator of room ' + room + '!');
+  		self.isChannelReady = true;
+		});
+
+		// Handle 'joined' message coming back from server:
+		// self is the second peer joining the channel
+		this.socket.on('joined', function (room){
+  			console.log('self peer has joined room ' + room);
+  			self.isChannelReady = true;
+
+  		// Call getUserMedia()
+  		navigator.getUserMedia(self.constraints, self.handleUserMedia.bind(self), self.handleUserMediaError.bind(self));
+  		console.log('Getting user media with constraints', self.constraints);
+	
+		});
+
+		// Server-sent log message...
+		this.socket.on('log', function (array){
+  		console.log.apply(console, array);
+		});
+
+		// Receive message from the other peer via the signalling server
+		this.socket.on('message', function (message){
+			
+  			if (message === 'got user media') {
+      			self.checkAndStart();
+  			} else if (message.type === 'offer') {
+	  			console.log('received offer');
+    		if (!self.isInitiator && !self.isStarted) {
+      			self.checkAndStart();
+    		}
+			console.log('received offer');
+    		self.pc.setRemoteDescription(new RTCSessionDescription(message));
+	  		
+    		self.doAnswer();
+  			} else if (message.type === 'answer' && self.isStarted) {
+    			self.pc.setRemoteDescription(new RTCSessionDescription(message));
+  				} else if (message.type === 'candidate' && self.isStarted) {
+    				var candidate = new RTCIceCandidate({sdpMLineIndex:message.label,
+      				candidate:message.candidate});
+    				self.pc.addIceCandidate(candidate);
+  				} else if (message === 'bye' && isStarted) {
+    				self.handleRemoteHangup();
+  				}
+		});
+			alert('alert2');
+		
+		}
+		
+		
+		
+		
+		
+		
+		});
+		
+		
+		
+		
+		
+		
+
+		
+		
+		
+		
+		
+		
+	
+	
+	
+
+			
+			
+		
+		
+	</script>
+	
+	
+</dom-module>
+

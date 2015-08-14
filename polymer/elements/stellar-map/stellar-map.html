@@ -3,6 +3,14 @@
   google-map {
     height: 600px;
   }
+	
+	paper-button{
+			background-color:black;
+			color:white;
+			margin: 10px;
+		
+		}
+	
 </style>
 	<template>
 		<!--google-map latitude="37.77493" longitude="-122.41942"></google-map>
@@ -77,7 +85,7 @@
 				
 				},
 				searchMap:function(){
-					alert('search');
+					//alert('search');
 					var marker=document.createElement('google-map-marker');
 					marker.latitude=this.result.latitude;
 					marker.longitude=this.result.longitude;

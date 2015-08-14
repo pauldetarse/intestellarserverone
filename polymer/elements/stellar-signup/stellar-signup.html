@@ -1,4 +1,11 @@
 <dom-module id="stellar-signup">
+	<style>
+	paper-button{
+			background-color:black;
+			color:white;
+		
+		}
+	</style>
 	<template>
 		
 				<div class="horizontal-section">
@@ -12,7 +19,7 @@
           <br>
 					
 			 <paper-button on-click="sendInformationToServer" raised>Send</paper-button>
-
+					<span>{{username}}</span>
 				
 	  </div>
 	
@@ -45,11 +52,8 @@
 			},
 			
 			ready:function(){
-				//alert(eb);
+			
 				
-			},
-			factoryImpl(eb){
-				//alert('eb')
 			}
 		
 		})

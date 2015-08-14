@@ -39,12 +39,51 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 	
 	
-	<link rel="import" href="elements/element2.html">
 	
-	  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/0.3.4/sockjs.min.js"></script>
-    <script type="text/javascript" src=" //cdnjs.cloudflare.com/ajax/libs/vertx/2.0.0/vertxbus.min.js"></script>
-
+	
+	
   <style is="custom-style">
+	  paper-button {
+	  	background: #000;
+		  color: #fff;
+	  
+	  }
+	  paper-menu{
+	  /*	var(--paper-menu-selected-item,#000);
+		 --paper-menu-background-color:#EEE;
+		  --paper-menu-focused-item:#000;
+		 
+		   background-color:   var(--paper-menu-selected-item, #000);
+		  */
+	  }
+	/* 
+	   .iron-selected {
+    
+		    background-color:   var(--paper-menu-selected-item, #ccc);
+		    color:   var(--paper-menu-focused-item, #ccc);
+		  
+		    background-color: #FFF;
+        color: white;
+    }
+	  
+	  
+	  */
+	   .iron-selected {
+        background-color: #ddd;
+      }
+	  
+  paper-toolbar {
+    --paper-toolbar-background: #000; /* changes the background to blue*/
+    --paper-toolbar-color: #ccc; /* changes the foreground color to green */
+    --paper-toolbar: {
+      /*font-size: 40px;  Change default font size */
+    }; /* Notice the semicolon here */
+  }
+	  /*
+	  body{
+ background: linear-gradient(0deg, transparent, transparent 3.5px, rgba(0,0,0,0.2) 3.5px, rgba(0,0,0,0.2) 4px);
+	  }
+	  */
 
     paper-scroll-header-panel {
       @apply(--layout-fit);
@@ -105,6 +144,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
 
   </style>
+	<link rel="import" href="elements/element2.html">
 
 </head>
 <body unresolved>
@@ -120,11 +160,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-toolbar id="drawerToolbar">
           <span class="paper-font-title">Menu</span>
 		<span flex></span>
-		  <paper-button raised style="background-color:blue;color:white" onclick="material()">Material</paper-button>
+		  <paper-button raised  onclick="material()">Material</paper-button>
         </paper-toolbar>
 
         <!-- Drawer Content -->
           <paper-menu class="list" attr-for-selected="data-route" selected="{{route}}" on-iron-select="onMenuSelect">
+			   <!--iron-selector  attr-for-selected="data-route" selected="{{route}}" on-iron-select="onMenuSelect"-->
               <a data-route="home" href="/">
                 <iron-icon icon="home"></iron-icon>
                 <span>Home</span>
@@ -171,17 +212,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			  
 			  </a>
 			  <a data-route="ajaxcontacts" href="/ajaxcontacts">
-				   <iron-icon icon="maps:place"></iron-icon>
+				     <iron-icon icon="social:people"></iron-icon>
                 <span>Ajax contacts</span>
 			  
 			  </a>
 			  
 			  <a data-route="ajaxy" href="/ajaxyoutube">
-				   <iron-icon icon="maps:place"></iron-icon>
+				 
+				   <iron-icon icon="av:video-library"></iron-icon>
                 <span>Ajax Youtube</span>
 			  
 			  </a>
+			  
+			   <a data-route="webrtc" href="/webrtc">
+				   <iron-icon icon="av:videocam"></iron-icon>
+                <span>Web rtc</span>
+			  
+			  </a>
           </paper-menu>
+		  <!--/iron-selector-->
       </div>
       <paper-header-panel main mode="waterfall-tall">
 
@@ -195,10 +244,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <paper-icon-button icon="search"></paper-icon-button>
 
           <!-- Application name -->
-          <div class="middle paper-font-display2 app-name">Interstellar Messenger</div>
+          <div class="middle paper-font-display3 app-name">Interstellar Messenger</div>
 
           <!-- Application sub title -->
-          <div class="bottom title"></div>
+          <div class="bottom title">The Cosmos is all that is or ever was or ever will be</div>
 
         </paper-toolbar>
 
@@ -326,6 +375,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			  
 			  </section>
 			
+			   <section data-route="webrtc">
+			  <paper-material elevation="5">
+				  <h2 class="paper-font-display2">Web rtc</h2>
+				<stellar-webrtc></stellar-webrtc>
+				  
+				  </paper-material>
+			  
+			  
+			  
+			  </section>
+			
 
           </iron-pages>
         </div>
@@ -338,7 +398,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <script>
 	
-	  eb=new vertx.EventBus('/eventbus');
+	  
 	  
 	  
 

@@ -56,7 +56,7 @@ if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){/*
 	}); 
 	this.Youtube = mongoose.model('youtube', youtube);
 	console.log('youtune');
-	console.log(this.Youtube);
+	//console.log(this.Youtube);
 
 },
 	

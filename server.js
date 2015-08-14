@@ -104,6 +104,8 @@ server.listen(port,ipaddress);
 
 // Let's start managing connections...
 io.sockets.on('connection', function (socket){
+	console.log('XXXXXXXXXXXXX');
+	console.log('connection');
 
         // Handle 'message' messages
 	
