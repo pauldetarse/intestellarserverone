@@ -1,0 +1,61 @@
+<script>
+	AjaxBehaviors={
+	
+	
+	
+	
+	
+	createXMlHttpRequestObject:function(){
+	var xmlHttp; 
+	console.log(' createXMlHttpRequestObject')
+	
+    if(window.XMLHttpRequest) {
+      xmlHttp = new XMLHttpRequest();  
+    }else{
+       xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    return xmlHttp;
+
+},
+process:function(xmlHttp){
+	self=this;
+	console.log('process');
+	
+    if (xmlHttp) {
+        try {
+            xmlHttp.open ("GET", "tuna.xml", true);
+            xmlHttp.onreadystatechange = this.handleStateChange;
+            xmlHttp.send(null);  
+        } catch (e) {
+            alert (e.toString());       
+        }
+    }
+
+
+},
+handleStateChange:function(){
+	console.log('handleStateChange');
+    if (xmlHttp.readyState == 4) {
+        if (xmlHttp.status == 200) {
+           try {
+                self.handleResponse(xmlHttp);
+           } catch (e) {
+                alert (e.toString());
+           }
+        } else {
+            alert (xmlHttp.statusText);
+        }
+    }
+
+}
+
+		};
+
+
+
+
+
+
+
+
+</script>

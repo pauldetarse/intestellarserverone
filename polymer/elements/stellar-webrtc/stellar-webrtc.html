@@ -22,6 +22,7 @@
 	</style>
 	<template>
 	<div>
+		<paper-input label="Entrez le nom de la chambre" bind-value="{{room}}" on-tap="{{roomSelected}}" id="roomName"></paper-input><paper-button on-tap="roomSelected">room selected</paper-button>
 		
 		
 		<div id="videos">	
@@ -334,10 +335,15 @@ stop:function() {
 		handleUserMediaError:function(error){
         console.log('navigator.getUserMedia error: ', error);
 		},
+		ready:function(){
+		
+		
+		}
+		,
 
 		
 		
-		ready:function(){
+		roomSelected:function(){
 			
 			var self=this;
 			
@@ -348,7 +354,7 @@ stop:function() {
                     reconnectionAttempts: 100,
                     secure: false
         }
-		this.room = prompt('Enter room name:');
+	//	this.room = prompt('Enter room name:');
 		//	http://interstellarserverone-startrade.rhcloud.com/
 		//this.socket=io('localhost:8080');
 		this.socket=io('http://interstellarserverone-startrade.rhcloud.com:8000');
