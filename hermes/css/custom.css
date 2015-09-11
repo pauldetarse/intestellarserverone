@@ -1,0 +1,382 @@
+/* navbar-static-top*/
+body {
+  min-height: 2000px;
+}
+
+.navbar-static-top {
+  margin-bottom: 19px;
+}
+.txt-ic-navLeft{
+color:#A62916;
+
+}
+.txt-ic-navLeft:hover{
+color:#F2462C;
+}
+.txt-ic-navRight{
+color:#B8BEC2;
+}
+.txt-ic-navRight:hover{
+color:#FAAC05;
+}
+.text-lightGrey{
+color:#e0e0e0;
+}
+/*slide menu*/
+/* adjust body when menu is open */
+body.slide-active {
+    overflow-x: hidden
+}
+/*first child of #page-content so it doesn't shift around*/
+.no-margin-top {
+    margin-top: 0px!important
+}
+/*wrap the entire page content but not nav inside this div if not a fixed top, don't add any top padding */
+#page-content {
+    position: relative;
+    padding-top: 70px;
+    left: 0;
+}
+#page-content.slide-active {
+    padding-top: 0
+}
+/* put toggle bars on the left :: not using button */
+#slide-nav .navbar-toggle {
+    cursor: pointer;
+    position: relative;
+    line-height: 0;
+    float: left;
+    margin: 0;
+    width: 30px;
+    height: 40px;
+    padding: 10px 0 0 0;
+    border: 0;
+    background: transparent;
+}
+/* icon bar prettyup - optional */
+#slide-nav .navbar-toggle > .icon-bar {
+    width: 100%;
+    display: block;
+    height: 3px;
+    margin: 5px 0 0 0;
+}
+#slide-nav .navbar-toggle.slide-active .icon-bar {
+    background: #2c8fc5;
+}
+.navbar-header {
+    position: relative
+}
+/* un fix the navbar when active so that all the menu items are accessible */
+.navbar.navbar-fixed-top.slide-active {
+    position: relative
+}
+/* screw writing importants and shit, just stick it in max width since these classes are not shared between sizes */
+@media (max-width:767px) { 
+	#slide-nav .container {
+	    margin: 0;
+	    padding: 0!important;
+	}
+	#slide-nav .navbar-header {
+	    margin: 0 auto;
+	    padding: 0 15px;
+	}
+	#slide-nav .navbar.slide-active {
+	    position: absolute;
+	    width: 80%;
+	    top: -1px;
+	    z-index: 1000;
+	}
+	#slide-nav #slidemenu {
+	    background: #f7f7f7;
+	    left: -100%;
+	    width: 80%;
+	    min-width: 0;
+	    position: absolute;
+	    padding-left: 0;
+	    z-index: 2;
+	    top: -8px;
+	    margin: 0;
+	}
+	#slide-nav #slidemenu .navbar-nav {
+	    min-width: 0;
+	    width: 100%;
+	    margin: 0;
+	}
+	#slide-nav #slidemenu .navbar-nav .dropdown-menu li a {
+	    min-width: 0;
+	    width: 80%;
+	    white-space: normal;
+	}
+	#slide-nav {
+	    border-top: 0
+	}
+	#slide-nav.navbar-inverse #slidemenu {
+	   background: #333;		
+	}
+	#slide-nav.navbar-default #slidemenu {
+		
+		/*background:#020103;*/
+		background: url("../images/bg_slideMenu.png") rgba(0, 0, 0, 0);
+		padding-top:15px;
+	}
+	/* this is behind the navigation but the navigation is not inside it so that the navigation is accessible and scrolls*/
+	#slide-nav #navbar-height-col {
+	    position: fixed;
+	    top: 0;
+	    height: 100%;
+	    width: 80%;
+	    left: -80%;
+	    background: #eee;
+	}
+	#slide-nav.navbar-inverse #navbar-height-col {
+	    background: #333;
+	    z-index: 1;
+	    border: 0;
+	}
+	#slide-nav.navbar-default #navbar-height-col {
+		
+		background: url("../images/bg_slideMenu.png") rgba(0, 0, 0, 0);
+	    z-index: 1;
+	    border: 0;
+	}
+	#slide-nav .navbar-form {
+	    width: 100%;
+	    margin: 8px 0;
+	    text-align: center;
+	    overflow: hidden;
+	    /*fast clearfixer*/
+	}
+	#slide-nav .navbar-form .form-control {
+	    text-align: center
+	}
+	#slide-nav .navbar-form .btn {
+	    width: 100%
+	}
+}
+@media (min-width:768px) { 
+	#page-content {
+	    left: 0!important
+	}
+	.navbar.navbar-fixed-top.slide-active {
+	    position: fixed
+	}
+	.navbar-header {
+	    left: 0!important
+	}
+}
+/**********************************************/
+/* navbar */
+/**********************************************/
+.navbar-default {
+background: url("../images/bg_nav.png") rgba(0, 0, 0, 0);
+	/*background-color: #020103;*/
+	border-color: #3a3a3a;
+}
+.navbar-default .navbar-brand {
+	color: #ecf0f1;
+}
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+	color: #8b8b8b;
+}
+.navbar-default .navbar-text {
+	color: #ecf0f1;
+}
+.navbar-default .navbar-nav > li > a {
+	color: #ecf0f1;
+}
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+	color: #8b8b8b;
+}
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+	color: #8b8b8b;
+	background-color: #3a3a3a;
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+	color: #8b8b8b;
+	background-color: #3a3a3a;
+}
+.navbar-default .navbar-toggle {
+	border-color: #3a3a3a;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+	background-color: #3a3a3a;
+}
+.navbar-default .navbar-toggle .icon-bar {
+	background-color: #ecf0f1;
+}
+.navbar-default .navbar-collapse,
+.navbar-default .navbar-form {
+	border-color: #ecf0f1;
+}
+.navbar-default .navbar-link {
+	color: #ecf0f1;
+}
+.navbar-default .navbar-link:hover {
+	color: #8b8b8b;
+}
+
+@media (max-width: 767px) {
+	.navbar-default .navbar-nav .open .dropdown-menu > li > a {
+		color: #ecf0f1;
+	}
+	.navbar-default .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+		color: #8b8b8b;
+	}
+	.navbar-default .navbar-nav .open .dropdown-menu > .active > a, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+		color: #8b8b8b;
+		background-color: #3a3a3a;
+	}
+}
+
+/*.navbar-default {
+	background-color: #173d6a;
+	border-color: #2c8fc5;
+}
+.navbar-default .navbar-brand {
+	color: #ecf0f1;
+}
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+	
+	color:#8E918F;
+}
+.navbar-default .navbar-text {
+	color: #ecf0f1;
+}
+.navbar-default .navbar-nav > li > a {
+	color: #ecf0f1;
+}
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+	
+	color:#8E918F;
+}
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+	
+	color:#8E918F;
+	background-color: #2c8fc5;
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+	
+	color:#8E918F;
+	background-color: #2c8fc5;
+}
+.navbar-default .navbar-toggle {
+	border-color: #2c8fc5;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+	background-color: #2c8fc5;
+}
+.navbar-default .navbar-toggle .icon-bar {
+	background-color: #ecf0f1;
+}
+.navbar-default .navbar-collapse,
+.navbar-default .navbar-form {
+	border-color: #ecf0f1;
+}
+.navbar-default .navbar-link {
+	color: #ecf0f1;
+}
+.navbar-default .navbar-link:hover {
+	color: #9fddfb;
+}
+
+@media (max-width: 767px) {
+	.navbar-default .navbar-nav .open .dropdown-menu > li > a {
+		color: #ecf0f1;
+	}
+	.navbar-default .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+		color: #9fddfb;
+	}
+	.navbar-default .navbar-nav .open .dropdown-menu > .active > a, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+		color: #9fddfb;
+		background-color: #2c8fc5;
+	}
+}*/
+
+/*Flipping Card*/
+/* entire container, keeps perspective */
+.flip-container {
+	perspective: 1000;
+	transform-style: preserve-3d;
+	 margin: 0 auto;
+}
+	/*  UPDATED! flip the pane when hovered */
+	.flip-container:hover .backCard {
+		transform: rotateY(0deg);
+	}
+	.flip-container:hover .frontCard {
+	    transform: rotateY(180deg);
+	}
+
+.flip-container, .frontCard, .backCard {
+	width: 250px;
+	height: 390px;
+	
+}
+.icon-frontCard{
+position: absolute;
+top:50px;
+margin-left:60px;
+}
+.icon-backCard{
+position: absolute;
+top:50px;
+margin-left:90px;
+}
+.contentFrontCard, .contentBackCard {
+position: absolute;
+top:130px;
+margin: 0px 40px 20px;
+}
+
+/* flip speed goes here */
+.flipper {
+	transition: 0.6s;
+	transform-style: preserve-3d;
+
+	position: relative;
+}
+
+/* hide back of pane during swap */
+.frontCard, .backCard {
+	backface-visibility: hidden;
+	transition: 0.6s;
+	transform-style: preserve-3d;
+  
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+/*  UPDATED! front pane, placed above back */
+.frontCard {
+	z-index: 2;
+	transform: rotateY(0deg);
+	background: url("../images/card-front.png") rgba(0, 0, 0, 0) no-repeat !important;
+	
+}
+
+/* back, initially hidden pane */
+.backCard {
+	transform: rotateY(-180deg);
+	background: url("../images/card-back.png") rgba(0, 0, 0, 0) no-repeat !important;
+	
+}
+
+/* 
+	Some vertical flip updates 
+*/
+.vertical.flip-container {
+	position: relative;
+}
+
+	.vertical .backCard {
+		transform: rotateX(180deg);
+	}
+
+	.vertical.flip-container:hover .backCard {
+	    transform: rotateX(0deg);
+	}
+
+	.vertical.flip-container:hover .frontCard {
+	    transform: rotateX(180deg);
+	}

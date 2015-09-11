@@ -60,7 +60,7 @@ if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){/*
 
 },
 	
-save:function(user){
+saveUser:function(user){
 	console.log('save');
 
 	var users = new this.Users({name:user.name,password:user.password});
@@ -69,17 +69,17 @@ save:function(user){
 
 	users.save(function (err) {
   	if (err) { throw err; }
-  	console.log('Commentaire ajouté avec succès !');
+  	console.log('User saved !');
   
 	});
 },
 saveYoutubeUrl:function(youtube){
 	console.log('saveYoutube');
-	console.log(JSON.stringify(youtube));
+	//console.log(JSON.stringify(youtube));
 
 	var youtube = new this.Youtube({url:youtube.url,username:youtube.username});
 	console.log('youtube');
-	console.log(this.Youtube);
+	//console.log(this.Youtube);
 	
  
 
@@ -104,9 +104,9 @@ findYoutubeUrl:function(){
 },
 	
 	
-find:function(){
+authenticate:function(user){
 	console.log('fund')
-	this.UserModel.find(null, function (err, users) {
+	this.Users.find(user, function (err, users) {
 		console.log('find');
   	if (err) { throw err; }
 		console.log(JSON.stringify(users));

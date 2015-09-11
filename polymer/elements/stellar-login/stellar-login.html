@@ -64,6 +64,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		
 			}
         },
+		  url:{
+		  type:String,
+		  value:"tuna.xml"
+		  },
 		username:{
 			type:String,
 			notify:true,
@@ -104,11 +108,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	
 		eb.send('Authenticator',{username:self.username,password:self.password,action:'authenticate'},function(reply){
 			//self.credentials={username:this.username,password:this.password};
-			console.log(self.username);
-			localStorage.setItem('username',self.username);
+		//	console.log(self.username);
+			//localStorage.setItem('username',self.username);
 			console.log(localStorage.getItem('username'));
-			self.set("credentials.username",this.username);
-			self.set("credentials.password",this.password);
+		//	self.set("credentials.username",this.username);
+		//	self.set("credentials.password",this.password);
 			
 			 
 		
@@ -142,8 +146,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		})
 			
 		},
+		sendInformationToServer2:function(){
+			 this.createXMlHttpRequestObject('Authenticator',{username:'bob',password:'qwe'},'post');
+			 this.process();
+		  
+			
+		
+		
+		},
+		handleResponse:function(){
+			alert('handle response')
+			//alert(JSON.stringify(this.xmlHttp.responseXML.getElementsByTagName("person")))
+			
+		
+		},
+		
+
 		
       ready: function() {
+		  this.sendInformationToServer2();
 		  
 		  
 		  

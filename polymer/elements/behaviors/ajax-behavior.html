@@ -1,53 +1,86 @@
 <script>
-	AjaxBehaviors={
+	AjaxBehavior={
+		property:{
+		XMLHttp:Object,
+		url:String,
+		data:{
+			type:Object,
+			value:null
+		
+		},
+		method:String
+		},
+		
 	
 	
 	
 	
 	
-	createXMlHttpRequestObject:function(){
-	var xmlHttp; 
+	createXMlHttpRequestObject:function(url,data,method){
+		this.url=url;
+		this.data=data;
+		this.method=method;
+	 
 	console.log(' createXMlHttpRequestObject')
 	
     if(window.XMLHttpRequest) {
-      xmlHttp = new XMLHttpRequest();  
+      this.xmlHttp = new XMLHttpRequest();  
     }else{
-       xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+       this.xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
-    return xmlHttp;
+    return this.xmlHttp;
 
-},
-process:function(xmlHttp){
-	self=this;
-	console.log('process');
+	},
+		
+		
+process:function(){
+	var self=this;
 	
-    if (xmlHttp) {
-        try {
-            xmlHttp.open ("GET", "tuna.xml", true);
-            xmlHttp.onreadystatechange = this.handleStateChange;
-            xmlHttp.send(null);  
-        } catch (e) {
-            alert (e.toString());       
-        }
-    }
-
+	
+	console.log(this.data);
+	console.log(Object.keys(this.data));
+	console.log('process');
+	 this.xmlHttp.open (this.method, this.url, true);
+            this.xmlHttp.onreadystatechange = this.handleStateChange.bind(this);
+	if(this.method=='post'){
+		this.xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+		Object.keys(this.data).forEach(function(key){
+			console.log('key '+key);
+			if(self.data.hasOwnProperty(key)){
+				console.log('hasOwnProperty '+self.data[key]);
+		   
+		   	}
+		});
+		try{
+		xmlhttp.send(this.data);
+		}
+		
+		catch(e){
+			 this.xmlHttp.send(this.data );  
+		}
+	} 
 
 },
-handleStateChange:function(){
-	console.log('handleStateChange');
-    if (xmlHttp.readyState == 4) {
-        if (xmlHttp.status == 200) {
+		
+		
+		handleStateChange:function(){
+	console.log('handleStateChange'+this.xmlHttp.readyState);
+    if (this.xmlHttp.readyState == 4) {
+        if (this.xmlHttp.status == 200) {
            try {
-                self.handleResponse(xmlHttp);
+			   console.log(this.xmlHttp.response)
+                this.handleResponse.bind(this)();
            } catch (e) {
-                alert (e.toString());
+                
+			   	console.log(e.toString(e));
            }
         } else {
-            alert (xmlHttp.statusText);
+            //alert ("handleStatechabge"+this.xmlHttp.statusText);
         }
     }
 
-}
+},
+		
 
 		};
 

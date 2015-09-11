@@ -8,9 +8,12 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var database = require('./database/database.js');
+database.connect();
+
 
 var routes = require('./routes/index');
-//var users = require('./routes/users');
+var users = require('./routes/users');
 
 var orders = require('./routes/orders');
 var youtube = require('./routes/youtube');
@@ -57,14 +60,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 //app.use(express.static(path.join(__dirname, 'polymerstellar')));
 app.use(express.static(path.join(__dirname, 'polymer')));
 app.use(express.static(path.join(__dirname,'webrtc')));
-
+app.use(express.static(path.join(__dirname,'hermes')))
 
 
 
 
 
 app.use('/', routes);
-//app.use('/users', users);
+app.use('/user', users);
 app.use('/api',orders);
 app.use('/api',youtube);
 
@@ -100,6 +103,7 @@ app.use(function(err, req, res, next) {
 });
 
 server.listen(port,ipaddress);
+users={};
 
 
 // Let's start managing connections...
@@ -155,4 +159,16 @@ io.sockets.on('connection', function (socket){
         }
         socket.emit('log', array);
     }
-});
+	socket.on('Authenticator',function(userInfo){
+		console.log(userInfo);
+		console.log('Authenticator');
+	});
+		
+	
+	
+	});
+	
+	
+	//chat
+	
+	
